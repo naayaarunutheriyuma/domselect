@@ -1,0 +1,20 @@
+# Dev
+pip
+bumpversion
+pytest
+build
+twine
+coverage
+pytest-cov
+pytest-xdist
+selectolax[cython]
+lxml
+
+# Types
+types-lxml
+
+# Code Quality
+ruff
+mypy[faster-cache]>=1.12
+pylint
+black
