@@ -13,8 +13,10 @@ Domselect library provides these selectors:
 
 1. LexborSelector powered by [selectolax](https://github.com/rushter/selectolax)
     and [lexbor](https://github.com/lexbor/lexbor) libraries. The type of raw node is `selectolax.lexbor.LexborNode`.
+    Query language is CSS.
 
 2. LxmlSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
+    Query language is CSS.
 
 ### Selector Creating
 
@@ -47,7 +49,7 @@ sel = LxmlSelector(node)
 ### Selector Traversal Methods
 
 Each of these methods return other selectors of same type i.e. LexborSelector return
-other LexborSelectors and LxmlSelector returns other LxmlSelectors.
+other LexborSelectors and LxmlSelector returns other LxmlSelectors. Query language is CSS.
 
 Method `find(query: str)` returns list of selectors bound to raw nodes found by CSS query.
 
