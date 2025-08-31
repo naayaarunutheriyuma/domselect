@@ -3,9 +3,10 @@
 Domselect provides high-level API to work with structure of HTML document using one of HTML processing backend.
 To work with HTML document you have to create so-called selector object from raw content of HTML document.
 That selector will be bound to the root node of HTML structure. Then you can call different methods of these selector
-to build other selectors bound to nested parts of HTML structure. Selector object use DOM constructed by HTML processing
-backend to extract low-level raw nodes and wrap then into selector interface. In case of non-standard scenario you can
-get raw node from selector node to do some low-level operations.
+to build other selectors bound to nested parts of HTML structure.
+
+Selector object extracts low-level nodes from DOM constructed by HTML processing backend and wraps them
+into high-level selector interface. If you need, you can always access low-level node stored in selector object.
 
 ### Selector Backends
 
