@@ -23,7 +23,6 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Internet :: WWW/HTTP",
     "Typing :: Typed",
-    "Private :: Do Not Upload", # https://pypi.org/classifiers/
 ]
 dependencies = []
 
