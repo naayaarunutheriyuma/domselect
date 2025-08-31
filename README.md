@@ -24,13 +24,11 @@ Domselect library provides these selectors:
 
 ### Selector Creating
 
-Let's have some HTML document `HTML = "<div>test</div>"`
-
 To create lexbor selector from content of HTML document:
 
 ```python
 from domselect import LexborSelector
-sel = LexborSelector.from_content(HTML)
+sel = LexborSelector.from_content("<div>test</div>")
 ```
 
 Also you can create selector from raw node:
@@ -38,7 +36,7 @@ Also you can create selector from raw node:
 ```python
 from domselect import LexborSelector
 from selectolax.lexbor import LexborHTMLParser
-node = LexborHTMLParser(HTML).css_first("div")
+node = LexborHTMLParser("<div>test</div>").css_first("div")
 sel = LexborSelector(node)
 ```
 
@@ -47,7 +45,7 @@ Same goes for lxml backend. Here is an example of creating lxml selector from ra
 ```python
 from lxml.html import fromstring
 from domselect import LxmlCssSelector, LxmlXpathSelector
-node = fromstring(HTML)
+node = fromstring("<div>test</div>")
 sel = LxmlCssSelector(node)
 # or
 sel = LxmlXpathSelector(node)
