@@ -17,7 +17,7 @@ Domselect library provides these selectors:
     Query language is CSS.
 
 2. LxmlSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
-    Query language is CSS.
+    Query language is CSS. Lexbor parser is x3-x4 times faster than lxml parser.
 
 ### Selector Creating
 
@@ -25,14 +25,14 @@ Let's have some HTML document `HTML = "<div>test</div>"`
 
 To create lexbor selector from content of HTML document:
 
-```
+```python
 from domselect import LexborSelector
 sel = LexborSelector.from_content(HTML)
 ```
 
 Also you can create selector from raw node:
 
-```
+```python
 from domselect import LexborSelector
 from selectolax.lexbor import LexborHTMLParser
 node = LexborHTMLParser(HTML).css_first("div")
@@ -41,7 +41,7 @@ sel = LexborSelector(node)
 
 Same goes for lxml backend. Here is an example of creating lxml selector from raw node:
 
-```
+```python
 from lxml.html import fromstring
 node = fromstring(HTML)
 sel = LxmlSelector(node)
@@ -97,3 +97,33 @@ Method `first_text(query: str[, default: None|str, strip: bool])` returns text c
 sub-nodes) found by given query. If node is not found the `NodeNotFoundError` is raised. Use optional `default: None|str`
 parametere to return `None` or `str` instead of raising exceptions. You can control text stripping with `strip`
 parameter (see description of `text()` method).
+
+### Usage example
+
+This code downloads telegram channel preview page and parse external links from it.
+
+```python
+from html import unescape
+from urllib.request import urlopen
+
+from domselect import LexborSelector
+
+
+def main() -> None:
+    content = urlopen("https://t.me/s/centralbank_russia").read()
+    sel = LexborSelector.from_content(content)
+    for msg_node in sel.find(".tgme_widget_message_wrap"):
+        msg_date = msg_node.first_attr(
+            ".tgme_widget_message_date time", "datetime", default=None
+        )
+        for text_node in msg_node.find(".tgme_widget_message_text"):
+            print("Message by {}".format(msg_date))
+            for link_node in text_node.find("a[href]"):
+                url = link_node.attr("href")
+                if url.startswith("http"):
+                    print(" - {}".format(unescape(url)))
+
+
+if __name__ == "__main__":
+    main()
+```
