@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import overload
+from typing import Generic, TypeVar, overload
 
 from .errors import AttributeNotFoundError, NodeNotFoundError
 from .unset import UNSET, UnsetType
 
 DEFAULT_STRIP_TEXT = True
+RawNodeT = TypeVar("RawNodeT")
 
 
-class BaseSelector[RawNodeT]:
+class BaseSelector(Generic[RawNodeT]):
     __slots__ = ["raw_node"]
 
     def __init__(self, raw_node: RawNodeT) -> None:

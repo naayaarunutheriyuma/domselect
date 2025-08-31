@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import threading
 from abc import abstractmethod
-from typing import Self, TypedDict, cast
+from typing import TypedDict, cast
 
 import lxml.html
 from lxml.cssselect import CSSSelector
 from lxml.html import HtmlElement, fromstring
+from typing_extensions import Self
 
 from .base import DEFAULT_STRIP_TEXT, BaseSelector
 from .errors import AttributeNotFoundError, InvalidQueryError, NodeNotFoundError

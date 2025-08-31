@@ -49,13 +49,13 @@ release:
 	&& twine upload dist/*
 
 mypy:
-	mypy --strict $(FILES_CHECK_MYPY) --enable-error-code exhaustive-match
+	mypy --strict $(FILES_CHECK_MYPY) --enable-error-code exhaustive-match --python-version 3.9
 
 pylint:
 	pylint -j0 $(FILES_CHECK_ALL)
 
 ruff:
-	ruff check $(FILES_CHECK_ALL)
+	ruff check --target-version=py39 $(FILES_CHECK_ALL)
 
 check: ruff mypy pylint
 
