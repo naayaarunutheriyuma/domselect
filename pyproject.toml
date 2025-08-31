@@ -6,7 +6,15 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.12"
 license = {"file" = "LICENSE"}
-keywords = []
+keywords = [
+    "html",
+    "dom",
+    "lxml",
+    "css",
+    "xpath",
+    "lexbor",
+    "parser",
+]
 authors = [
     {name = "Gregory Petukhov", email = "lorien@lorien.name"}
 ]
