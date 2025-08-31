@@ -17,20 +17,17 @@ class BaseSelector[RawNodeT]:
 
     @classmethod
     @abstractmethod
-    def from_content(cls, content: bytes | str) -> BaseSelector[RawNodeT]:
-        ...
+    def from_content(cls, content: bytes | str) -> BaseSelector[RawNodeT]: ...
 
     @overload
-    def find_one(
+    def first(
         self, query: str, default: UnsetType = UNSET
-    ) -> BaseSelector[RawNodeT]:
-        ...
+    ) -> BaseSelector[RawNodeT]: ...
 
     @overload
-    def find_one(self, query: str, default: None) -> None | BaseSelector[RawNodeT]:
-        ...
+    def first(self, query: str, default: None) -> None | BaseSelector[RawNodeT]: ...
 
-    def find_one(
+    def first(
         self, query: str, default: None | UnsetType = UNSET
     ) -> None | BaseSelector[RawNodeT]:
         try:
@@ -43,14 +40,12 @@ class BaseSelector[RawNodeT]:
             ) from ex
 
     @overload
-    def find_raw_one(self, query: str, default: UnsetType = UNSET) -> RawNodeT:
-        ...
+    def first_raw(self, query: str, default: UnsetType = UNSET) -> RawNodeT: ...
 
     @overload
-    def find_raw_one(self, query: str, default: None) -> None | RawNodeT:
-        ...
+    def first_raw(self, query: str, default: None) -> None | RawNodeT: ...
 
-    def find_raw_one(
+    def first_raw(
         self, query: str, default: None | UnsetType = UNSET
     ) -> None | RawNodeT:
         try:
@@ -70,19 +65,16 @@ class BaseSelector[RawNodeT]:
         raise NotImplementedError
 
     def exists(self, query: str) -> bool:
-        return self.find_one(query, default=None) is not None
+        return self.first(query, default=None) is not None
 
     @overload
-    def attr(self, name: str, default: UnsetType = UNSET) -> str:
-        ...
+    def attr(self, name: str, default: UnsetType = UNSET) -> str: ...
 
     @overload
-    def attr(self, name: str, default: None) -> None | str:
-        ...
+    def attr(self, name: str, default: None) -> None | str: ...
 
     @overload
-    def attr(self, name: str, default: str) -> str:
-        ...
+    def attr(self, name: str, default: str) -> str: ...
 
     def attr(self, name: str, default: None | UnsetType | str = UNSET) -> None | str:
         try:
@@ -97,31 +89,28 @@ class BaseSelector[RawNodeT]:
         raise NotImplementedError
 
     @overload
-    def find_text(
+    def first_text(
         self, query: str, default: UnsetType = UNSET, strip: bool = DEFAULT_STRIP_TEXT
-    ) -> str:
-        ...
+    ) -> str: ...
 
     @overload
-    def find_text(
+    def first_text(
         self, query: str, default: None, strip: bool = DEFAULT_STRIP_TEXT
-    ) -> None | str:
-        ...
+    ) -> None | str: ...
 
     @overload
-    def find_text(
+    def first_text(
         self, query: str, default: str, strip: bool = DEFAULT_STRIP_TEXT
-    ) -> str:
-        ...
+    ) -> str: ...
 
-    def find_text(
+    def first_text(
         self,
         query: str,
         default: None | UnsetType | str = UNSET,
         strip: bool = DEFAULT_STRIP_TEXT,
     ) -> None | str:
         try:
-            return self.find_one(query).text(strip=strip)
+            return self.first(query).text(strip=strip)
         except NodeNotFoundError:
             if default is UNSET:
                 raise
@@ -136,22 +125,19 @@ class BaseSelector[RawNodeT]:
         raise NotImplementedError
 
     @overload
-    def find_attr(self, query: str, name: str, default: UnsetType = UNSET) -> str:
-        ...
+    def first_attr(self, query: str, name: str, default: UnsetType = UNSET) -> str: ...
 
     @overload
-    def find_attr(self, query: str, name: str, default: str) -> str:
-        ...
+    def first_attr(self, query: str, name: str, default: str) -> str: ...
 
     @overload
-    def find_attr(self, query: str, name: str, default: None) -> None | str:
-        ...
+    def first_attr(self, query: str, name: str, default: None) -> None | str: ...
 
-    def find_attr(
+    def first_attr(
         self, query: str, name: str, default: None | UnsetType | str = UNSET
     ) -> None | str:
         try:
-            return self.find_one(query).attr(name, default=default)
+            return self.first(query).attr(name, default=default)
         except NodeNotFoundError:
             if default is UNSET:
                 raise
@@ -162,18 +148,16 @@ class BaseSelector[RawNodeT]:
         raise NotImplementedError
 
     @overload
-    def grep_one(
+    def first_contains(
         self, query: str, pattern: str, default: UnsetType = UNSET
-    ) -> BaseSelector[RawNodeT]:
-        ...
+    ) -> BaseSelector[RawNodeT]: ...
 
     @overload
-    def grep_one(
+    def first_contains(
         self, query: str, pattern: str, default: None
-    ) -> None | BaseSelector[RawNodeT]:
-        ...
+    ) -> None | BaseSelector[RawNodeT]: ...
 
-    def grep_one(
+    def first_contains(
         self, query: str, pattern: str, default: None | UnsetType = UNSET
     ) -> None | BaseSelector[RawNodeT]:
         for sel in self.find(query):

@@ -51,13 +51,13 @@ class LexborSelector(BaseSelector[LexborNode]):
             ) from ex
 
     @overload
-    def find_raw_one(self, query: str, default: UnsetType = UNSET) -> LexborNode: ...
+    def first_raw(self, query: str, default: UnsetType = UNSET) -> LexborNode: ...
 
     @overload
-    def find_raw_one(self, query: str, default: None) -> None | LexborNode: ...
+    def first_raw(self, query: str, default: None) -> None | LexborNode: ...
 
     # optimization: use css_first instead of base css()[0]
-    def find_raw_one(
+    def first_raw(
         self, query: str, default: None | UnsetType = UNSET
     ) -> None | LexborNode:
         res = self.raw_node.css_first(query)
@@ -69,4 +69,4 @@ class LexborSelector(BaseSelector[LexborNode]):
 
     # optimizatoin: use css_matches instead of base find_one()
     def exists(self, query: str) -> bool:
-        return self.raw_node.css_matches(query)
+        return bool(self.raw_node.css_matches(query))
