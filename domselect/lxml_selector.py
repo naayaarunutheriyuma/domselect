@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import threading
-from typing import TypedDict, cast
+from abc import abstractmethod
+from typing import Self, TypedDict, cast
 
 import lxml.html
 from lxml.cssselect import CSSSelector
@@ -9,6 +10,8 @@ from lxml.html import HtmlElement, fromstring
 
 from .base import DEFAULT_STRIP_TEXT, BaseSelector
 from .errors import AttributeNotFoundError, InvalidQueryError, NodeNotFoundError
+
+__all__ = ["LxmlCssSelector", "LxmlXpathSelector"]
 
 LXML_CSS_SELECTOR_CACHE: dict[str, CSSSelector] = {}
 THREAD_STORE = threading.local()
@@ -18,8 +21,10 @@ class ThreadStoreCache(TypedDict, total=False):
     paser: lxml.html.HTMLParser
 
 
-class LxmlSelector(BaseSelector[HtmlElement]):
-    __slots__ = []
+class BaseLxmlSelector(BaseSelector[HtmlElement]):
+    @abstractmethod
+    def find_raw(self, query: str) -> list[HtmlElement]:
+        raise NotImplementedError
 
     @classmethod
     def get_html_parser(cls) -> lxml.html.HTMLParser:
@@ -32,18 +37,8 @@ class LxmlSelector(BaseSelector[HtmlElement]):
         )
 
     @classmethod
-    def from_content(cls, content: bytes | str) -> LxmlSelector:
-        return LxmlSelector(fromstring(content, parser=cls.get_html_parser()))
-
-    def find_raw(self, query: str) -> list[HtmlElement]:
-        res = LXML_CSS_SELECTOR_CACHE.setdefault(query, CSSSelector(query))(
-            self.raw_node
-        )
-        if not isinstance(res, list):
-            raise InvalidQueryError(
-                "Selector support only queries which results in list of DOM nodes"
-            )
-        return res
+    def from_content(cls, content: bytes | str) -> Self:
+        return cls(fromstring(content, parser=cls.get_html_parser()))
 
     def get_raw_attr(self, name: str) -> str:
         try:
@@ -62,8 +57,34 @@ class LxmlSelector(BaseSelector[HtmlElement]):
     def tag(self) -> str:
         return str(self.raw_node.tag)
 
-    def parent(self) -> LxmlSelector:
+    def parent(self) -> Self:
         node = self.raw_node.getparent()
         if node is None:
             raise NodeNotFoundError("Parent node does not exists")
-        return LxmlSelector(node)
+        return self.__class__(node)
+
+
+class LxmlCssSelector(BaseLxmlSelector):
+    __slots__ = []
+
+    def find_raw(self, query: str) -> list[HtmlElement]:
+        res = LXML_CSS_SELECTOR_CACHE.setdefault(query, CSSSelector(query))(
+            self.raw_node
+        )
+        if not isinstance(res, list):
+            raise InvalidQueryError(
+                "Selector support only queries which results in list of DOM nodes"
+            )
+        return res
+
+
+class LxmlXpathSelector(BaseLxmlSelector):
+    __slots__ = []
+
+    def find_raw(self, query: str) -> list[HtmlElement]:
+        res = self.raw_node.xpath(query)
+        if not isinstance(res, list):
+            raise InvalidQueryError(
+                "Selector support only queries which results in list of DOM nodes"
+            )
+        return res

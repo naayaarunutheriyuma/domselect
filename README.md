@@ -14,10 +14,13 @@ Domselect library provides these selectors:
 
 1. LexborSelector powered by [selectolax](https://github.com/rushter/selectolax)
     and [lexbor](https://github.com/lexbor/lexbor) libraries. The type of raw node is `selectolax.lexbor.LexborNode`.
+    Query language is CSS. Lexbor parser is x3-x4 times faster than lxml parser.
+
+2. LxmlCssSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
     Query language is CSS.
 
-2. LxmlSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
-    Query language is CSS. Lexbor parser is x3-x4 times faster than lxml parser.
+2. LxmlXpathSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
+    Query language is XPATH.
 
 ### Selector Creating
 
@@ -43,28 +46,31 @@ Same goes for lxml backend. Here is an example of creating lxml selector from ra
 
 ```python
 from lxml.html import fromstring
+from domselect import LxmlCssSelector, LxmlXpathSelector
 node = fromstring(HTML)
-sel = LxmlSelector(node)
+sel = LxmlCssSelector(node)
+# or
+sel = LxmlXpathSelector(node)
 ```
 
 ### Node Traversal Methods
 
 Each of these methods return other selectors of same type i.e. LexborSelector return
-other LexborSelectors and LxmlSelector returns other LxmlSelectors. Query language is CSS.
+other LexborSelectors and LxmlCssSelector returns other LxmlCssSelectors.
 
-Method `find(query: str)` returns list of selectors bound to raw nodes found by CSS query.
+Method `find(query: str)` returns list of selectors bound to raw nodes found by query.
 
-Method `first(query: str)` returns `None` of selector bound to first raw node found by CSS query.
+Method `first(query: str)` returns `None` of selector bound to first raw node found by query.
 
 There is similar `find_raw` and `first_raw` methods which works in same way but returns low-level raw nodes
 i.e. they do not wrap found nodes into selector interface.
 
 Method `parent()` returns selector bound to raw node which is parent to raw node of current selector.
 
-Method `exists(query: str)` returns boolean flag indicates if any node has been found by CSS query.
+Method `exists(query: str)` returns boolean flag indicates if any node has been found by query.
 
 Method `first_contains(query: str, pattern: str[, default: None])` returns selector bound to first raw node
-found by CSS query and which contains text as `pattern` parameter. If node is not found then
+found by query and which contains text as `pattern` parameter. If node is not found then
 `NodeNotFoundError` is raised. You can pass `default=None` optional parameter to return `None` in case
 of node is not found.
 
@@ -84,9 +90,10 @@ Method `tag()` returns tag name of raw node to which current selector is bound.
 ### Traversal and Properties Methods
 
 These methods combine two operations: search node by query and do something on found node. They are helful
-if you want to get text or attribute from found node by this node might not exists. Such methods allows you
-to return reasonable default value in case node is not found. On contrary, if you use call chain like `first(..).text()`
-Then you'll not be able to return from `text()` default value because `first()` will raise Exception if node is not found.
+if you want to get text or attribute from found node, but this node might not exist. Such methods allows you
+to return reasonable default value in case node is not found. On contrary, if you use call chain like `first().text()`
+then you'll not be able to return default value from `text()` call because `first()` will raise Exception if
+node is not found.
 
 Method `first_attr(query: str, name: str[, default: None|str])` returns content of attribute of given name of node
 found by given query.  If node does not have such attribute the `AttributeNotFoundError` is raised.
