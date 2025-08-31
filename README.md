@@ -1,7 +1,7 @@
 # Domselect
 
-Domselect provides high-level API to work with structure of HTML document using one of HTML processing backend.
-To work with HTML document you have to create so-called selector object from raw content of HTML document.
+Domselect provides univeral interface to work with structure of HTML document built by one of supported HTML
+processing engines. To work with HTML document you have to create so-called selector object from raw content of HTML document.
 That selector will be bound to the root node of HTML structure. Then you can call different methods of these selector
 to build other selectors bound to nested parts of HTML structure.
 
