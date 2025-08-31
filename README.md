@@ -119,7 +119,7 @@ def main() -> None:
     sel = LexborSelector.from_content(content)
     for msg_node in sel.find(".tgme_widget_message_wrap"):
         msg_date = msg_node.first_attr(
-            ".tgme_widget_message_date time", "datetime", default=None
+            ".tgme_widget_message_date time", "datetime"
         )
         for text_node in msg_node.find(".tgme_widget_message_text"):
             print("Message by {}".format(msg_date))
@@ -147,9 +147,7 @@ def main() -> None:
     sel = LxmlXpathSelector.from_content(content)
     for msg_node in sel.find('//*[contains(@class, "tgme_widget_message_wrap")]'):
         msg_date = msg_node.first_attr(
-            './/*[contains(@class, "tgme_widget_message_date")]/time',
-            "datetime",
-            default=None,
+            './/*[contains(@class, "tgme_widget_message_date")]/time', "datetime"
         )
         for text_node in msg_node.find(
             './/*[contains(@class, "tgme_widget_message_text")]'

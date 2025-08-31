@@ -11,7 +11,6 @@ def main() -> None:
         msg_date = msg_node.first_attr(
             './/*[contains(@class, "tgme_widget_message_date")]/time',
             "datetime",
-            default=None,
         )
         for text_node in msg_node.find(
             './/*[contains(@class, "tgme_widget_message_text")]'
